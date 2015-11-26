@@ -1,5 +1,7 @@
 package monbadge.monandroidtools;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,24 +10,59 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.nfc.*;
 
 public class SecurityGate extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_security_gate);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        //NFC setup
+        NfcManager manager = (NfcManager) this.getSystemService(this.NFC_SERVICE);
+        NfcAdapter adapter = manager.getDefaultAdapter();
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("");
+        builder1.setCancelable(false);
+        builder1.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+                System.exit(0);
             }
         });
+
+        if (adapter != null && !adapter.isEnabled())
+        {
+            AlertDialog alert = builder1.create();
+            alert.setMessage("NFC is disabled! Please enable NFC to run this application.");
+            alert.show();
+        }
+
+        else if (adapter == null)
+        {
+            AlertDialog alert = builder1.create();
+            alert.setMessage("No NFC device detected!");
+            alert.show();
+        }
+
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_security_gate);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+
+    }
+
+
+    //Code to take care of hiding the red light image (awaiting the actual NFC code).
+
+    
+
+    @Override
+    public void onBackPressed()
+    {
+        finish();
+        System.exit(0);
     }
 
     @Override
