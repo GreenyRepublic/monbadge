@@ -51,15 +51,15 @@ public class SecurityGate extends AppCompatActivity {
     private void scanAccepted()
     {
         setLight(2);
-        
         Thread timer = new Thread();
         try {
-            timer.sleep(1000);
+            timer.sleep(1500);
         }
         catch (InterruptedException e)
         {
             //EMPTY
         }
+        setLight(1);
     }
 
     //Change the status light image.
