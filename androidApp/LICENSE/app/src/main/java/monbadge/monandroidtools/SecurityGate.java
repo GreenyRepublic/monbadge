@@ -30,24 +30,39 @@ public class SecurityGate extends AppCompatActivity {
         
         if (nfcAdapter != null && !nfcAdapter.isEnabled())
         {
+<<<<<<< HEAD
             Toast.makeText(SecurityGate.this, "NFC is disabled!", Toast.LENGTH_LONG).show();
+=======
+            Toast.makeText(SecurityGate.this, "NFC is disabled!", Toast.LENGTH_SHORT).show();
+>>>>>>> origin/master
         }
 
         else if (nfcAdapter == null)
         {
+<<<<<<< HEAD
             Toast.makeText(SecurityGate.this, "No NFC module detected!", Toast.LENGTH_LONG).show();
+=======
+            Toast.makeText(SecurityGate.this, "No NFC module detected!", Toast.LENGTH_SHORT).show();
+>>>>>>> origin/master
         }
 
         else
         {
+<<<<<<< HEAD
             Toast.makeText(SecurityGate.this, "NFC detected and enabled, nice!", Toast.LENGTH_LONG).show();
             setLight(1);
+=======
+            Toast.makeText(SecurityGate.this, "NFC detected and enabled, nice!", Toast.LENGTH_SHORT).show();
+            setLight(1);
+
+>>>>>>> origin/master
         }
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
     }
 
+<<<<<<< HEAD
     private void scanAccepted()
     {
         setLight(2);
@@ -69,6 +84,15 @@ public class SecurityGate extends AppCompatActivity {
         Integer images[] = {R.drawable.light_off,R.drawable.light_red,R.drawable.light_green};
         ImageView statusLight = (ImageView) findViewById(R.id.statusLight);
 
+=======
+    //Change the status light image.
+    private void setLight(int setting)
+    {
+        setContentView(R.layout.content_security_gate);
+        Integer images[] = {R.drawable.light_off,R.drawable.light_red,R.drawable.light_green};
+        ImageView statusLight = (ImageView) findViewById(R.id.statusLight);
+
+>>>>>>> origin/master
         statusLight.setImageResource(images[setting]);
     }
 
