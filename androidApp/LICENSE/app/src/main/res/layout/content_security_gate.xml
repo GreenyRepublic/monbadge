@@ -15,22 +15,8 @@
     >
 
     <ImageView
+        android:id="@+id/statusLight"
         android:layout_width="150dp"
-        android:layout_height="fill_parent"
-        android:id="@+id/green_light"
-        android:src="@drawable/light_green"
-        android:contentDescription="@string/greenlight_desc"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/red_light"
-        android:layout_alignStart="@+id/red_light" />
-
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="fill_parent"
-        android:id="@+id/red_light"
-        android:src="@drawable/light_red"
-        android:contentDescription="@string/redlight_desc"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="fill_parent"/>
 
 </RelativeLayout>

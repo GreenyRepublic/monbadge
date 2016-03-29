@@ -2,6 +2,7 @@ package monbadge.monandroidtools;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,40 +12,38 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.nfc.*;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 public class SecurityGate extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+        setLight(0);
+
         //NFC setup
         NfcManager manager = (NfcManager) this.getSystemService(this.NFC_SERVICE);
-        NfcAdapter adapter = manager.getDefaultAdapter();
-
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage("");
-        builder1.setCancelable(false);
-        builder1.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                System.exit(0);
-            }
-        });
-
-        if (adapter != null && !adapter.isEnabled())
+        NfcAdapter nfcAdapter = manager.getDefaultAdapter();
+        
+        if (nfcAdapter != null && !nfcAdapter.isEnabled())
         {
-            AlertDialog alert = builder1.create();
-            alert.setMessage("NFC is disabled! Please enable NFC to run this application.");
-            alert.show();
+            Toast.makeText(SecurityGate.this, "NFC is disabled!", Toast.LENGTH_SHORT).show();
         }
 
-        else if (adapter == null)
+        else if (nfcAdapter == null)
         {
-            AlertDialog alert = builder1.create();
-            alert.setMessage("No NFC device detected!");
-            alert.show();
+            Toast.makeText(SecurityGate.this, "No NFC module detected!", Toast.LENGTH_SHORT).show();
         }
 
+        else
+        {
+            Toast.makeText(SecurityGate.this, "NFC detected and enabled, nice!", Toast.LENGTH_SHORT).show();
+            setLight(1);
+
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_security_gate);
@@ -53,10 +52,15 @@ public class SecurityGate extends AppCompatActivity {
 
     }
 
+    //Change the status light image.
+    private void setLight(int setting)
+    {
+        setContentView(R.layout.content_security_gate);
+        Integer images[] = {R.drawable.light_off,R.drawable.light_red,R.drawable.light_green};
+        ImageView statusLight = (ImageView) findViewById(R.id.statusLight);
 
-    //Code to take care of hiding the red light image (awaiting the actual NFC code).
-
-    
+        statusLight.setImageResource(images[setting]);
+    }
 
     @Override
     public void onBackPressed()
