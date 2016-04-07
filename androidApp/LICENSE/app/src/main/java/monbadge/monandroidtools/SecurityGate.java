@@ -27,13 +27,16 @@ import java.util.Arrays;
 public class SecurityGate extends AppCompatActivity {
 
     //NFC setup
-    private NfcManager manager = (NfcManager) this.getSystemService(this.NFC_SERVICE);
-    private NfcAdapter nfcAdapter = manager.getDefaultAdapter();
+    private NfcManager manager;
+    private NfcAdapter nfcAdapter;
     public static final String MIME_TEXT_PLAIN = "text/plain";
     private static final String TAG = SecurityGate.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        manager = (NfcManager) this.getSystemService(this.NFC_SERVICE);
+        nfcAdapter = manager.getDefaultAdapter();
 
         //Initial stuff
         super.onCreate(savedInstanceState);
@@ -90,7 +93,7 @@ public class SecurityGate extends AppCompatActivity {
         statusLight.setImageResource(images[setting]);
     }
 
-    //Get data from the NFC tag.
+    //Handles the NFC intent.
     //Credit to Ralf Wondratschek.
     private void handleIntent(Intent intent)
     {
@@ -106,6 +109,7 @@ public class SecurityGate extends AppCompatActivity {
             else
             {
                 Log.d(TAG, "Wrong MIME type: " + type);
+                Toast.makeText(SecurityGate.this, "Wrong MIME type!" , Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -132,6 +136,7 @@ public class SecurityGate extends AppCompatActivity {
                     catch(UnsupportedEncodingException e)
                     {
                         Log.e(TAG, "Unsupported Encoding", e);
+                        Toast.makeText(SecurityGate.this, "Unsupported encoding!" , Toast.LENGTH_SHORT).show();
                     }
                 }
             }
