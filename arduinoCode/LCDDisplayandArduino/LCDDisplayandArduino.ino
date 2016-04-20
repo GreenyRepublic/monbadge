@@ -8,7 +8,7 @@
 #define rst  6
 
 // Color definitions
-#define BLACK           0x0000                                                                                                                                                     
+#define BLACK           0x0000
 #define RED             0xF800
 #define YELLOW          0xFFE0
 #define WHITE           0xFFFF
@@ -63,10 +63,10 @@ void setup() {
     FPSenroll();
     delay(1000);
   }*/
-  
+
   /*
   nfc.begin();
-  
+
   uint32_t versiondata = nfc.getFirmwareVersion();
   if (! versiondata) {
     printLine("Didn't find NFC board");
@@ -79,7 +79,7 @@ void setup() {
 
   readNFC();
   */
- 
+
 }
 
 void loop() {
@@ -115,7 +115,7 @@ void profileDetails() {
     i++;
   }
   dataFile.close();
- 
+
   if (displayString[10] != "")
   {
     enrolled = true;
@@ -131,13 +131,13 @@ void profileDetails() {
     tft.println("enrolled a fingerprint.");
     tft.setCursor(0, 70);
     tft.println("Please enroll now!");
-    
+
     while (enrolled == false) {
       FPSenroll();
-      
+
     }
   }
-  
+
   if (enrolled == true){
     bool verified = false;
     tft.fillScreen(BLACK);
@@ -172,10 +172,10 @@ void profileDetails() {
         printLine("Please press finger");
       }
       delay(1000);
-    
+
     }
   }
-  
+
   tft.fillScreen(BLACK);
   tft.setCursor(0, 40);
   tft.setTextColor(YELLOW);
@@ -349,5 +349,3 @@ void printLine(String str) {
   tft.println(str);
   bstr = str;
 }
-
-
