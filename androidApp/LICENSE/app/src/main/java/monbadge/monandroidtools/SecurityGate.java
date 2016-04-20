@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.regex.*;
 
 public class SecurityGate extends AppCompatActivity {
 
@@ -41,8 +42,16 @@ public class SecurityGate extends AppCompatActivity {
         //Initial stuff
         super.onCreate(savedInstanceState);
         setLight(0);
+        checkNfcAdapter();
+        handleIntent(getIntent());
 
-        //Display a message and set the light appropriately depending on the NFC adapter state.
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+    }
+
+    //Display a message and set the light appropriately depending on the NFC adapter state.
+    private void checkNfcAdapter()
+    {
         if (nfcAdapter == null)
         {
             Toast.makeText(SecurityGate.this, "No NFC module detected!", Toast.LENGTH_LONG).show();
@@ -61,11 +70,6 @@ public class SecurityGate extends AppCompatActivity {
             Toast.makeText(SecurityGate.this, "NFC detected and enabled!", Toast.LENGTH_LONG).show();
             setLight(1);
         }
-
-        handleIntent(getIntent());
-
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
     }
 
     //If a valid NFC transmission is received, turn the light green for a second and a half.
@@ -91,6 +95,12 @@ public class SecurityGate extends AppCompatActivity {
         ImageView statusLight = (ImageView) findViewById(R.id.statusLight);
 
         statusLight.setImageResource(images[setting]);
+    }
+
+    //Checks that an NDEF-transmitted string matches the format.
+    private boolean checkData(String ndefdata)
+    {
+        return Pattern.matches("[a-z]+_[a-z]+:[0-9][0-9][0-9][0-9][0-9][0-9]", ndefdata);
     }
 
     //Handles the NFC intent.
@@ -173,7 +183,7 @@ public class SecurityGate extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            if (result != null) {
+            if (result != null && checkData(result)) {
                 setLight(2);
             }
         }
@@ -210,12 +220,13 @@ public class SecurityGate extends AppCompatActivity {
 
 
     //The following few functions are used for handling app resumption and preventing nasty errors that may result from it.
-    //Credit to Ralf Wondratschek.
+    //Credit to Ralf Wondratschek. Some modification by Benjamin Clark.
     //http://tutsplus.com/authors/ralf-wondratschek
 
     @Override
     protected void onResume() {
         super.onResume();
+        checkNfcAdapter();
 
         /**
          * It's important, that the activity is in the foreground (resumed). Otherwise
