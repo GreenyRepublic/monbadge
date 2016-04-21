@@ -78,7 +78,7 @@ public class SecurityGate extends AppCompatActivity {
         setLight(2);
         Thread timer = new Thread();
         try {
-            timer.sleep(1500);
+            timer.sleep(2000);
         }
         catch (InterruptedException e)
         {
@@ -184,7 +184,7 @@ public class SecurityGate extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if (result != null && checkData(result)) {
-                setLight(2);
+                scanAccepted();
             }
         }
     }
