@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Sashimono.ino" />
+    <None Include="Sashimono_Fingerprint.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.Sashimono.vsarduino.h">
+    <ClInclude Include="__vm\.Sashimono_Fingerprint.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

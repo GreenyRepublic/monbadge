@@ -62,20 +62,6 @@ void setup() {
   Serial.println("MON NDEF Test");
   nfc.begin();
 
-
-  Serial.println("\nPlace a formatted Mifare Classic or Ultralight NFC tag on the reader.");
-  if (nfc.tagPresent()) {
-    NdefMessage message = NdefMessage();
-    message.addUriRecord("ben_clark:493029");
-
-    bool success = nfc.write(message);
-    if (success) {
-      Serial.println("Success. Try reading this tag with your phone.");
-    } else {
-      Serial.println("Write failed.");
-    }
-  }
-  delay(5000);
 }
 
 void loop() {
