@@ -123,7 +123,7 @@ void profileDetails() {
 		tft.setTextSize(1);
 		tft.println("Your profile is");
 		tft.setCursor(0, startY + spacing);
-		tft.println("locked");
+		tft.println("locked.");
 		tft.setCursor(0, startY + (spacing*2));
 		tft.println("Press your finger to");
 		tft.setCursor(0, startY + (spacing * 3));

@@ -1,3 +1,7 @@
+//The software for the MON badge Arduino prototype.
+//Currently incorporates the display and NFC module, as well as reading user data from a file stored on a microSD card.
+//Written by Kwok Hau and Benjamin Clark.
+//22/04/2016
 
 //IO Pin definitions.
 #define sclk 2
@@ -18,26 +22,21 @@
 #include <Adafruit_SSD1351.h>
 
 //Libraries for the NFC controller.
-#include <SPI.h>
-#include <PN532_SPI.h>
+#include <Wire.h>
+#include <PN532_I2C.h>
 #include <PN532.h>
 #include <NfcAdapter.h>
-#include "SoftwareSerial.h"
 
 //Other libraries.
 #include <FileIO.h>
 #include <avr/wdt.h>
-#include <SPI.h>
-#include "FPS_GT511C3.h"
 #include "SoftwareSerial.h"
 
 
-
-//Hardware object declarations.;
-PN532_SPI pn532spi(SPI, 10);
-NfcAdapter nfc = NfcAdapter(pn532spi);
+//Hardware object declarations.
+PN532_I2C pn532i2c(Wire);
+PN532 nfc(pn532i2c);
 Adafruit_SSD1351 tft = Adafruit_SSD1351(cs, dc, mosi, sclk, rst);
-FPS_GT511C3 fps(8, 9);
 
 //String array for storing user data parsed from the stored text file.
 String displayString[12];
@@ -54,14 +53,20 @@ void setup() {
 
   //Display start-up splash screen, followed by the registered user's profile details.
   startupscreen();
-  getData();
+  //getData();
   profileDetails();
 
   //Initialise NFC.
-  Serial.begin(9600);
-  Serial.println("MON NDEF Test");
   nfc.begin();
-
+  uint32_t versiondata = nfc.getFirmwareVersion();
+  if (! versiondata) {
+    printLine("Didn't find NFC board");
+    while (1); // halt
+  }
+  nfc.setPassiveActivationRetries(0xFF);
+  nfc.SAMConfig();
+  printLine("Waiting for a card");
+  readNFC();
 }
 
 void loop() {
@@ -137,6 +142,27 @@ void profileDetails() {
     tft.println(displayString[counter]);
     pos += 10;
   }
+}
+
+void readNFC() {
+  boolean success;
+  uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer to store the returned UID
+  uint8_t uidLength;                        // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
+
+  // Wait for an ISO14443A type cards (Mifare, etc.).  When one is found
+  // 'uid' will be populated with the UID, and uidLength will indicate
+  // if the uid is 4 bytes (Mifare Classic) or 7 bytes (Mifare Ultralight)
+  success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, &uid[0], &uidLength);
+  if (success) {
+    printLine("Found a card!");
+  }
+  else
+  {
+    // PN532 probably timed out waiting for a card
+    printLine("Timed out waiting for a card");
+  }
+  delay(1000);
+  readNFC();
 }
 
 void printLine(String str) {

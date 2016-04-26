@@ -20,12 +20,12 @@
 #include <Adafruit_SSD1351.h>
 #include <SPI.h>
 
-/*
+
 #include <Wire.h>
 #include <PN532_I2C.h>
 #include <PN532.h>
 #include <NfcAdapter.h>
-*/
+
 
 #include "FPS_GT511C3.h"
 #include "SoftwareSerial.h"
@@ -34,10 +34,10 @@ Adafruit_SSD1351 tft = Adafruit_SSD1351(cs, dc, mosi, sclk, rst);
 
 FPS_GT511C3 fps(8, 9);
 
-/*
+
 PN532_I2C pn532i2c(Wire);
 PN532 nfc(pn532i2c);
-*/
+
 
 
 String bstr = "Waiting for a card";
@@ -64,7 +64,7 @@ void setup() {
     delay(1000);
   }*/
 
-  /*
+  
   nfc.begin();
 
   uint32_t versiondata = nfc.getFirmwareVersion();
@@ -78,7 +78,7 @@ void setup() {
   printLine("Waiting for a card");
 
   readNFC();
-  */
+  
 
 }
 
@@ -317,7 +317,7 @@ void FPSenroll() {
   }
 }
 
-/*void readNFC() {
+void readNFC() {
   boolean success;
   uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer to store the returned UID
   uint8_t uidLength;                        // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
@@ -338,7 +338,7 @@ void FPSenroll() {
   }
   delay(1000);
   readNFC();
-}*/
+}
 
 void printLine(String str) {
   tft.setCursor(0, 110);
